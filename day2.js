@@ -16,15 +16,22 @@ const ambilDataPesanan = () => {
 };
 //Fungsi Utama (Backend Logic)
 const main = async () => {
-    console.log("1. Menghubungkan ke Database...");
+    try {
+        const user = await ambilDataUser();
+        //...kode lainnya...
+    } catch (error) {
+        console.log("Waduh, ada masalah di server:", error);
+    }
+    console.log("--- Memulai Proses ---");
 
     //Kita pakai 'await' agar kode menunggu sampai data benar-benar ada
-    const user = await ambilDataPesanan();
+    const user = await ambilDataUser();
+    console.log("User ditemukan:", user.nama);
 
-    console.log("2. Data berhasil diambil:");
-    console.log(user);
+    const pesanan = await ambilDataPesanan();
+    console.log("Detail Pesanan:", pesanan.Produk, "-", pesanan.Harga);
 
-    console.log("3. Selesai, server siap menerima request lain.");
+    console.log("---Semua Data berhasil dimuat---");
 };
 
 main();
