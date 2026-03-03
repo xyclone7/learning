@@ -1,9 +1,22 @@
 const express = require('express');
+const fs = require('fs'); //tambahkan ini di paling atas file
 const app = express();
 app.use(express.json()); //Middlewave untuk baca format Json
 const port = 3000;
 
 //ini disebut route atau jalur 
+app.get('/baca-excel', (req, res) => {
+    //membaca data.csv
+    fs.readFile('data.csv', 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).json({ message: "gagal baca file"});
+        }
+
+        //kirim isinya ke browser
+        res.send(`<pre>${data}</pre>`);
+    });
+});
+
 app.get('/', (req, res) => {
     res.send('Halo Raki! Server Backend Kamu sudah berjalan');
 });
@@ -32,7 +45,8 @@ app.post('/input-data', (req, res) => {
         message: `Halo Raki, kamu baru saja menginput barang ${namaBarang} dengan jumlah ${stok}`
     });
 });
- 
+
+
 app.listen(port, () => {
     console.log(`Server nyala di http://localhost:${port}`);
     console.log(`Gunakan command Promt untuk ngetes POST ke /inputdata`);
